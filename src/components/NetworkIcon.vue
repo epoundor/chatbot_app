@@ -21,7 +21,7 @@ export default {
   props: {
     type: String,
   },
-  setup(props) {
+  setup(props: any) {
     const type = toRef(props, "type");
     const rttLevel = ref(0);
     setInterval(() => {

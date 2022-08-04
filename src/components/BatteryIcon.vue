@@ -33,7 +33,7 @@ export default {
     level: Number,
     charging: Boolean,
   },
-  setup(props) {
+  setup(props: any) {
     const level = toRef(props, "level");
     const getBatteryLevel = computed(() => {
       return level.value * 100;

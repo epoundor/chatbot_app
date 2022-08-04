@@ -23,7 +23,7 @@ export default {
   props: {
     rtt: Number,
   },
-  setup(props) {
+  setup(props: any) {
     const rtt = toRef(props, "rtt");
     const wifiLevel = ref(0);
     setInterval(() => {

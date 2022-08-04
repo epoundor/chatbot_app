@@ -251,7 +251,14 @@ import { sendReq } from "./utils";
 const battery = ref(1);
 const charging = ref(false);
 
-const date = ref("");
+const date = new Date(
+  new Date().setDate(new Date().getDate())
+).toLocaleDateString("en-US", {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
 const hour = ref(new Date().getHours());
 const minute = ref(new Date().getMinutes());
 const rtt = ref(0);
@@ -259,7 +266,7 @@ const type = ref(null);
 const msg = ref("");
 const writtingMode = ref(false);
 
-const messages = ref([]);
+const messages = ref();
 const { execute, context } = sendReq();
 
 watch(msg, () => {
@@ -273,32 +280,14 @@ watch(msg, () => {
 onMounted(async () => {
   messages.value = [
     {
-      msg: "Tomorrow definitely",
-      mine: true,
-      time: "10:30 PM",
-    },
-    {
-      msg: "Okie Dokie 🥰",
+      msg: "Je suis Séréna, une IA créée par Epoundor pour bavarder avec ses amis facilement. Comment puis-je vous aider aujourd'hui ?",
       mine: false,
-      time: "10:35 PM",
-    },
-    {
-      msg: "Okay",
-      mine: true,
-      time: "10:40 PM",
+      time: parseTime,
     },
   ];
 
   const t = new Date();
   setInterval(async () => {
-    date.value = new Date(
-      new Date().setDate(new Date().getDate())
-    ).toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
     hour.value = new Date().getHours();
     minute.value = new Date().getMinutes();
     rtt.value = navigator.connection.rtt;
