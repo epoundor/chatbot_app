@@ -292,7 +292,7 @@ onMounted(async () => {
     minute.value = new Date().getMinutes();
     rtt.value = navigator.connection.rtt;
     type.value = navigator.connection.effectiveType;
-    await navigator.getBattery().then((res) => {
+    await navigator.getBattery().then((res: any) => {
       battery.value = res.level;
       charging.value = res.charging;
     });
