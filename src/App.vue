@@ -48,7 +48,7 @@
               alt=""
             />
           </div>
-          <span class="text-[#00473E] font-bold">Epounpoun</span>
+          <span class="text-[#00473E] font-bold">Séréna</span>
         </div>
         <div class="flex items-center gap-4">
           <!-- TEL -->
