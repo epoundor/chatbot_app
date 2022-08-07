@@ -3,7 +3,7 @@ import {
   CreateCompletionResponseChoicesInner,
   OpenAIApi,
 } from "openai";
-import { reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 
 export function sendReq() {
   const context = reactive({
@@ -11,9 +11,9 @@ export function sendReq() {
     completion: [] as CreateCompletionResponseChoicesInner[],
   });
   let ctx =
-    "Ce qui suit est une conversation avec un assistant d'IA. L'assistant est serviable, créatif, intelligent et très sympathique.\n\nHumain: Bonjour, qui êtes-vous ?\nIA: Je suis Séréna, une IA créée par Epoundor pour bavarder avec ses amis facilement. Comment puis-je vous aider aujourd'hui ?";
+    "Ce qui suit est une conversation avec Séréna l'amie de Epoundor. Séréna est drôle, créative, intelligente et très sympathique.\n\nYou: Bonjour, qui êtes-vous ?\nSéréna: Je suis Séréna, une amie de Epoundor, il est oqp tu veux quoi chef?";
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "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",
   });
 
   const openai = new OpenAIApi(configuration);
@@ -21,7 +21,7 @@ export function sendReq() {
   async function execute(msg: string) {
     console.log("-----------MSG in execute", msg);
     context.isProcessing = true;
-    ctx += "\nHumain:" + msg + "\nIA:";
+    ctx += "\nYou:" + msg + "\nSéréna:";
     const res = await openai.createCompletion({
       model: "text-davinci-002",
       prompt: ctx,
@@ -45,4 +45,35 @@ export function sendReq() {
     context,
     execute,
   };
+}
+
+export const parseTime = computed(() => {
+  const hour = ref(new Date().getHours());
+  const minute = ref(new Date().getMinutes());
+  setInterval(async () => {
+    hour.value = new Date().getHours();
+    minute.value = new Date().getMinutes();
+  }, 500);
+  return (
+    hour.value.toString().padStart(2, 0) +
+    ":" +
+    minute.value.toString().padStart(2, 0)
+  );
+});
+
+export class EventBus {
+  events: Array<Event>;
+  constructor() {
+    this.events = [];
+  }
+  register(e: string) {
+    this.events.push(new CustomEvent(e));
+  }
+  emit(e: string, data: any) {
+    const event = this.events.find((el) => el.type == e);
+    dispatchEvent(new CustomEvent(e, { detail: data }));
+  }
+  on(e: string, clb: EventListenerOrEventListenerObject) {
+    addEventListener(e, clb);
+  }
 }

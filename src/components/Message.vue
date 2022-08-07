@@ -13,20 +13,15 @@
       <img
         v-if="mine"
         class="w-full h-full object-cover"
-        src="https://source.unsplash.com/random"
-        alt=""
-      />
-      <img
-        v-else
-        class="w-full h-full object-cover"
         src="../assets/profile_pic.JPG"
         alt=""
       />
+      <img v-else class="w-full h-full object-cover" :src="author_pic" alt="" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{ msg: string; mine: Boolean; time: string }>();
+defineProps<{ author_pic: string; msg: string; mine: Boolean; time: string }>();
 </script>
 <style scoped></style>

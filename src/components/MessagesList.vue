@@ -4,9 +4,16 @@
       :msg="msg.msg"
       :mine="msg.mine"
       :time="msg.time"
+      :author_pic="msg.author_pic"
       v-for="msg in messages"
     />
-    <Message msg="..." time="" :mine="false" v-if="isProcessing" />
+    <Message
+      msg="..."
+      time=""
+      :mine="false"
+      v-if="isProcessing"
+      :author_pic="msg.author_pic"
+    />
   </div>
 </template>
 
@@ -17,6 +24,7 @@ interface Message {
   msg: string;
   mine: Boolean;
   time: string;
+  author_pic: string;
 }
 
 const props = defineProps({
