@@ -25,7 +25,7 @@ export function sendReq() {
     const res = await openai.createCompletion({
       model: "text-davinci-002",
       prompt: ctx,
-      temperature: 0.5,
+      temperature: 0.8,
       max_tokens: 60,
       top_p: 1,
       frequency_penalty: 0.5,
