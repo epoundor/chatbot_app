@@ -1,5 +1,11 @@
 <template>
   <div class="bg-yellow-300 flex justify-center items-center w-screen h-screen">
+    <video
+      v-show="streaming"
+      class="absolute top-10 left-10 rounded-md border-slate-500 border-4 max-w-xs aspect-video"
+      id="video"
+    ></video>
+
     <div
       class="phone overflow-hidden w-[360px] h-[800px] rounded-[20px] bg-white relative"
     >
@@ -199,6 +205,7 @@
                 viewBox="0 0 22 22"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                @click="launchStream"
               >
                 <path
                   d="M19.9375 17.875H2.0625C1.88016 17.875 1.7053 17.8026 1.57636 17.6736C1.44743 17.5447 1.375 17.3698 1.375 17.1875V5.5C1.375 5.31766 1.44743 5.1428 1.57636 5.01386C1.7053 4.88493 1.88016 4.8125 2.0625 4.8125H6.50375L7.67938 3.05937C7.74165 2.9648 7.82633 2.88708 7.92588 2.8331C8.02543 2.77913 8.13676 2.75059 8.25 2.75H13.75C13.8632 2.75059 13.9746 2.77913 14.0741 2.8331C14.1737 2.88708 14.2583 2.9648 14.3206 3.05937L15.4963 4.8125H19.9375C20.1198 4.8125 20.2947 4.88493 20.4236 5.01386C20.5526 5.1428 20.625 5.31766 20.625 5.5V17.1875C20.625 17.3698 20.5526 17.5447 20.4236 17.6736C20.2947 17.8026 20.1198 17.875 19.9375 17.875ZM2.75 16.5H19.25V6.1875H15.125C15.0118 6.18691 14.9004 6.15837 14.8009 6.1044C14.7013 6.05042 14.6167 5.9727 14.5544 5.87813L13.3787 4.125H8.62125L7.44562 5.87813C7.38335 5.9727 7.29867 6.05042 7.19912 6.1044C7.09957 6.15837 6.98824 6.18691 6.875 6.1875H2.75V16.5Z"
@@ -269,6 +276,17 @@ const writtingMode = ref(false);
 const messages = ref();
 const { execute, context } = sendReq();
 
+const streaming = ref(false);
+let video = document.querySelector("#video");
+navigator.getMedia =
+  navigator.getUserMedia ||
+  navigator.webkitGetUserMedia ||
+  navigator.mozGetUserMedia ||
+  navigator.msGetUserMedia;
+let width = 320;
+let height = 0;
+
+//==============Watchers===============
 watch(msg, () => {
   if (msg.value.length > 0) {
     writtingMode.value = true;
@@ -278,6 +296,7 @@ watch(msg, () => {
 });
 
 onMounted(async () => {
+  video = document.querySelector("#video");
   messages.value = [
     {
       msg: "Je suis Séréna, une IA créée par Epoundor pour bavarder avec ses amis facilement. Comment puis-je vous aider aujourd'hui ?",
@@ -320,6 +339,49 @@ async function addMsg() {
     });
   }
 }
+function launchStream() {
+  if (video && !streaming.value) {
+    navigator.getMedia(
+      {
+        video: true,
+        audio: true,
+      },
+      function (stream: Blob | MediaSource) {
+        if (navigator.mozGetUserMedia) {
+          video!.mozSrcObject = stream;
+        } else {
+          console.log(stream);
+          streaming.value = true;
+          video!.srcObject = stream;
+        }
+        video!.play();
+        console.log(stream);
+      },
+      function (err: string) {
+        console.log("An error occured! " + err);
+      }
+    );
+  } else {
+    console.log("stream");
+  }
+}
+if (video !== null) {
+  video.addEventListener(
+    "canplay",
+    (ev: any) => {
+      console.log("object");
+      if (!streaming.value) {
+        height = video.videoHeight / (video.videoWidth / width);
+        video.setAttribute("width", width);
+        video.setAttribute("height", height);
+        canvas.setAttribute("width", width);
+        canvas.setAttribute("height", height);
+      }
+    },
+    false
+  );
+}
+
 function scrollBottom() {
   const el = document.querySelector("#msg-list");
   if (el) {

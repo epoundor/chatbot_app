@@ -13,7 +13,7 @@ export function sendReq() {
   let ctx =
     "Ce qui suit est une conversation avec un assistant d'IA. L'assistant est serviable, créatif, intelligent et très sympathique.\n\nHumain: Bonjour, qui êtes-vous ?\nIA: Je suis Séréna, une IA créée par Epoundor pour bavarder avec ses amis facilement. Comment puis-je vous aider aujourd'hui ?";
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "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",
   });
 
   const openai = new OpenAIApi(configuration);
@@ -25,7 +25,7 @@ export function sendReq() {
     const res = await openai.createCompletion({
       model: "text-davinci-002",
       prompt: ctx,
-      temperature: 0.5,
+      temperature: 0.8,
       max_tokens: 60,
       top_p: 1,
       frequency_penalty: 0.5,
