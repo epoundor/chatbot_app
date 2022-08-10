@@ -3,8 +3,9 @@ import {
   CreateCompletionResponseChoicesInner,
   OpenAIApi,
 } from "openai";
-import { reactive } from "vue";
 
+import { reactive } from "vue";
+console.log("=========API KEY", import.meta.env.VITE_API_KEY);
 export function sendReq() {
   const context = reactive({
     isProcessing: false,
@@ -13,7 +14,7 @@ export function sendReq() {
   let ctx =
     "Ce qui suit est une conversation avec un assistant d'IA. L'assistant est serviable, créatif, intelligent et très sympathique.\n\nHumain: Bonjour, qui êtes-vous ?\nIA: Je suis Séréna, une IA créée par Epoundor pour bavarder avec ses amis facilement. Comment puis-je vous aider aujourd'hui ?";
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: import.meta.env.VITE_API_KEY,
   });
 
   const openai = new OpenAIApi(configuration);
